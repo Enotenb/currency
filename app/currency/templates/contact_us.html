@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CONTACT US</title>
+</head>
+<body>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Email From</th>
+        <th>Email To</th>
+        <th>Subject</th>
+        <th>Message</th>
+    </tr>
+    {% for contact in contact_list %}
+    <tr>
+        <td>{{ contact.id }}</td>
+        <td>{{ contact.email_from }}</td>
+        <td>{{ contact.email_to }}</td>
+        <td>{{ contact.subject }}</td>
+        <td>{{ contact.message }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+</body>
+</html>
