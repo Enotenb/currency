@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'currency/base.html' %}
+
+{% block title %}RATE LIST{% endblock title %}
+{% block main_content %}
+    <h1>Rate List</h1>
+    <p><b><a href="/rate/create">Create new rate</a></b></p>
 
 <table>
     <tr>
@@ -28,6 +27,4 @@
     </tr>
     {% endfor %}
 </table>
-
-</body>
-</html>
+{% endblock main_content %}

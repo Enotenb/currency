@@ -1,0 +1,14 @@
+{% extends 'currency/base.html' %}
+
+{% block title %}SOURCE CREATE{% endblock title %}
+
+{% block main_content %}
+    <h1>Source Create</h1>
+    <p><b><a href="/source/list">Back</a></b></p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="reset">Reset</button>
+        <button type="submit">Create</button>
+    </form>
+{% endblock main_content %}

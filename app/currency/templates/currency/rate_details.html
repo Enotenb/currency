@@ -1,0 +1,32 @@
+{% extends 'currency/base.html' %}
+
+{% block title %}RATE DETAILS{% endblock title %}
+
+{% block main_content %}
+    <h1>Details Rate ID: {{ instance.id }}</h1>
+    <p><b><a href="/rate/list">Back</a></b></p>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Base Currency Type</th>
+        <th>Currency Type</th>
+        <th>Sale</th>
+        <th>Buy</th>
+        <th>Source</th>
+        <th>Created</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    <tr>
+        <td>{{ instance.id }}</td>
+        <td>{{ instance.base_currency_type }}</td>
+        <td>{{ instance.currency_type }}</td>
+        <td>{{ instance.sale }}</td>
+        <td>{{ instance.buy }}</td>
+        <td>{{ instance.source }}</td>
+        <td>{{ instance.created }}</td>
+        <td><a href="/rate/update/{{ instance.id }}/">Edit</a></td>
+        <td><a href="/rate/delete/{{ instance.id }}/">Delete</a></td>
+    </tr>
+</table>
+{% endblock main_content %}

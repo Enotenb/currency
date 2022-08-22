@@ -1,0 +1,26 @@
+{% extends 'currency/base.html' %}
+
+{% block title %}SOURCE DETAILS{% endblock title %}
+
+{% block main_content %}
+    <h1>Details Source ID: {{ instance.id }}</h1>
+    <p><b><a href="/source/list">Back</a></b></p>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Source URL</th>
+        <th>Created</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    <tr>
+        <td>{{ instance.id }}</td>
+        <td>{{ instance.name }}</td>
+        <td>{{ instance.source_url }}</td>
+        <td>{{ instance.created }}</td>
+        <td><a href="/source/update/{{ instance.id }}/">Edit</a></td>
+        <td><a href="/source/delete/{{ instance.id }}/">Delete</a></td>
+    </tr>
+</table>
+{% endblock main_content %}
