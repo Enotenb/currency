@@ -4,8 +4,8 @@
 
 {% block main_content %}
     <h1>Rate Delete</h1>
-    <p><b><a href="/rate/list">Back</a></b></p>
-    <p><b>Delete object with id {{ instance.id }}?</b></p>
+    <p><b><a href="{% url 'currency:rate_list' %}">Back</a></b></p>
+    <p><b>Delete object with id {{ object.id }}?</b></p>
     <form method="post">
         {% csrf_token %}
         <button type="submit">Delete</button>

@@ -3,8 +3,8 @@
 {% block title %}RATE DETAILS{% endblock title %}
 
 {% block main_content %}
-    <h1>Details Rate ID: {{ instance.id }}</h1>
-    <p><b><a href="/rate/list">Back</a></b></p>
+    <h1>Details Rate ID: {{ object.id }}</h1>
+    <p><b><a href="{% url 'currency:rate_list' %}">Back</a></b></p>
 <table>
     <tr>
         <th>ID</th>
@@ -18,15 +18,15 @@
         <th>Delete</th>
     </tr>
     <tr>
-        <td>{{ instance.id }}</td>
-        <td>{{ instance.base_currency_type }}</td>
-        <td>{{ instance.currency_type }}</td>
-        <td>{{ instance.sale }}</td>
-        <td>{{ instance.buy }}</td>
-        <td>{{ instance.source }}</td>
-        <td>{{ instance.created }}</td>
-        <td><a href="/rate/update/{{ instance.id }}/">Edit</a></td>
-        <td><a href="/rate/delete/{{ instance.id }}/">Delete</a></td>
+        <td>{{ object.id }}</td>
+        <td>{{ object.base_currency_type }}</td>
+        <td>{{ object.currency_type }}</td>
+        <td>{{ object.sale }}</td>
+        <td>{{ object.buy }}</td>
+        <td>{{ object.source }}</td>
+        <td>{{ object.created }}</td>
+        <td><a href="{% url 'currency:rate_update' rate.id %}">Edit</a></td>
+        <td><a href="{% url 'currency:rate_delete' rate.id %}">Delete</a></td>
     </tr>
 </table>
 {% endblock main_content %}

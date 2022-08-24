@@ -3,7 +3,7 @@
 {% block title %}SOURCE LIST{% endblock title %}
 {% block main_content %}
     <h1>Source List</h1>
-    <p><b><a href="/source/create">Create new source</a></b></p>
+    <p><b><a href="{% url 'currency:source_create' %}">Create new source</a></b></p>
 <table>
     <tr>
         <th>ID</th>
@@ -14,7 +14,7 @@
     <tr>
         <td>{{ source.id }}</td>
         <td>{{ source.name }}</td>
-        <td><a href="/source/details/{{ source.id }}/">View details</a></td>
+        <td><a href="{% url 'currency:source_details' source.id %}">View details</a></td>
     </tr>
 {% endfor %}
 </table>

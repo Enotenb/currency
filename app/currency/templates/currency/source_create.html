@@ -4,7 +4,7 @@
 
 {% block main_content %}
     <h1>Source Create</h1>
-    <p><b><a href="/source/list">Back</a></b></p>
+    <p><b><a href="{% url 'currency:source_list' %}">Back</a></b></p>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
