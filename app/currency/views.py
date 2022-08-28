@@ -1,140 +1,82 @@
-# from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.urls import reverse_lazy
+from django.views import generic
 
 from currency.models import ContactUs, Rate, Source
 
-from currency.utils import get_password
 from currency.forms import SourceForm, RateForm
 # Create your views here.
 
 
-def hello_world(request):
-    return HttpResponse('HELLO WORLD')
+class IndexView(generic.TemplateView):
+    template_name = 'currency/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['rate_count'] = Rate.objects.count()
+        context['source_count'] = Source.objects.count()
+        return context
 
 
-def generate_password(request):
-    password = get_password()
-    return HttpResponse(password)
+class RateListView(generic.ListView):
+    queryset = Rate.objects.all()
+    template_name = 'currency/rate_list.html'
 
 
-def index(request):
-    return render(request, 'currency/index.html')
+class RateCreateView(generic.CreateView):
+    queryset = Rate.objects.all()
+    template_name = 'currency/rate_create.html'
+    form_class = RateForm
+    success_url = reverse_lazy('currency:rate_list')
 
 
-def rate_list(request):
-    context = {
-        'rate_list': Rate.objects.all(),
-    }
-    return render(request, 'currency/rate_list.html', context=context)
+class RateUpdateView(generic.UpdateView):
+    queryset = Rate.objects.all()
+    template_name = 'currency/rate_update.html'
+    form_class = RateForm
+    success_url = reverse_lazy('currency:rate_list')
 
 
-def rate_create(request):
-
-    if request.method == 'POST':
-        form = RateForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/rate/list/')
-    elif request.method == 'GET':
-        form = RateForm()
-
-    context = {'form': form}
-    return render(request, 'currency/rate_create.html', context=context)
+class RateDetailsView(generic.DetailView):
+    queryset = Rate.objects.all()
+    template_name = 'currency/rate_details.html'
 
 
-def rate_update(request, rate_id):
-
-    # try:
-    #     rate_instance = Rate.objects.get(id=rate_id)
-    # except Rate.DoesNotExist:
-    #     raise Http404
-
-    rate_instance = get_object_or_404(Rate, id=rate_id)
-
-    if request.method == 'POST':
-        form = RateForm(request.POST, instance=rate_instance)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/rate/list/')
-    elif request.method == 'GET':
-        form = RateForm(instance=rate_instance)
-
-    context = {'form': form}
-    return render(request, 'currency/rate_update.html', context=context)
+class RateDeleteView(generic.DeleteView):
+    queryset = Rate.objects.all()
+    template_name = 'currency/rate_delete.html'
+    success_url = reverse_lazy('currency:rate_list')
 
 
-def rate_details(request, rate_id):
-    rate_instance = get_object_or_404(Rate, id=rate_id)
-    context = {'instance': rate_instance}
-    return render(request, 'currency/rate_details.html', context=context)
+class SourceListView(generic.ListView):
+    queryset = Source.objects.all()
+    template_name = 'currency/source_list.html'
 
 
-def rate_delete(request, rate_id):
-    rate_instance = get_object_or_404(Rate, id=rate_id)
-    if request.method == 'POST':
-        rate_instance.delete()
-        return HttpResponseRedirect('/rate/list/')
-
-    context = {'instance': rate_instance}
-    return render(request, 'currency/rate_delete.html', context=context)
+class SourceCreateView(generic.CreateView):
+    queryset = Rate.objects.all()
+    template_name = 'currency/source_create.html'
+    form_class = SourceForm
+    success_url = reverse_lazy('currency:source_list')
 
 
-def source_list(request):
-    context = {
-        'source_list': Source.objects.all(),
-    }
-    return render(request, 'currency/source_list.html', context=context)
+class SourceDetailsView(generic.DetailView):
+    queryset = Source.objects.all()
+    template_name = 'currency/source_details.html'
 
 
-def source_create(request):
-
-    if request.method == 'POST':
-        form = SourceForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/source/list/')
-    elif request.method == 'GET':
-        form = SourceForm()
-
-    context = {'form': form}
-    return render(request, 'currency/source_create.html', context=context)
+class SourceUpdateView(generic.UpdateView):
+    queryset = Source.objects.all()
+    template_name = 'currency/source_update.html'
+    form_class = SourceForm
+    success_url = reverse_lazy('currency:source_list')
 
 
-def source_details(request, source_id):
-    source_instance = get_object_or_404(Source, id=source_id)
-    context = {'instance': source_instance}
-    return render(request, 'currency/source_details.html', context=context)
+class SourceDeleteView(generic.DeleteView):
+    queryset = Source.objects.all()
+    template_name = 'currency/source_delete.html'
+    success_url = reverse_lazy('currency:source_list')
 
 
-def source_update(request, source_id):
-
-    source_instance = get_object_or_404(Source, id=source_id)
-
-    if request.method == 'POST':
-        form = SourceForm(request.POST, instance=source_instance)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/source/list/')
-    elif request.method == 'GET':
-        form = SourceForm(instance=source_instance)
-
-    context = {'form': form}
-    return render(request, 'currency/source_update.html', context=context)
-
-
-def source_delete(request, source_id):
-    source_instance = get_object_or_404(Source, id=source_id)
-    if request.method == 'POST':
-        source_instance.delete()
-        return HttpResponseRedirect('/source/list/')
-
-    context = {'instance': source_instance}
-    return render(request, 'currency/source_delete.html', context=context)
-
-
-def contact_us(request):
-    context = {
-        'contact_list': ContactUs.objects.all(),
-        }
-    return render(request, 'currency/contact_us.html', context=context)
+class ContactListView(generic.ListView):
+    queryset = ContactUs.objects.all()
+    template_name = 'currency/contact_us.html'

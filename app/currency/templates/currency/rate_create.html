@@ -4,7 +4,7 @@
 
 {% block main_content %}
     <h1>Rate Create</h1>
-    <p><b><a href="/rate/list">Back</a></b></p>
+    <p><b><a href="{% url 'currency:rate_list' %}">Back</a></b></p>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}

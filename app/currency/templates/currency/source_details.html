@@ -4,7 +4,7 @@
 
 {% block main_content %}
     <h1>Details Source ID: {{ instance.id }}</h1>
-    <p><b><a href="/source/list">Back</a></b></p>
+    <p><b><a href="{% url 'currency:source_list' %}">Back</a></b></p>
 <table>
     <tr>
         <th>ID</th>
@@ -15,12 +15,12 @@
         <th>Delete</th>
     </tr>
     <tr>
-        <td>{{ instance.id }}</td>
-        <td>{{ instance.name }}</td>
-        <td>{{ instance.source_url }}</td>
-        <td>{{ instance.created }}</td>
-        <td><a href="/source/update/{{ instance.id }}/">Edit</a></td>
-        <td><a href="/source/delete/{{ instance.id }}/">Delete</a></td>
+        <td>{{ object.id }}</td>
+        <td>{{ object.name }}</td>
+        <td>{{ object.source_url }}</td>
+        <td>{{ object.created }}</td>
+        <td><a href="{% url 'currency:source_update' source.id %}">Edit</a></td>
+        <td><a href="{% url 'currency:source_delete' source.id %}">Delete</a></td>
     </tr>
 </table>
 {% endblock main_content %}
