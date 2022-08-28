@@ -4,6 +4,8 @@ from django.views import generic
 from currency.models import ContactUs, Rate, Source
 
 from currency.forms import SourceForm, RateForm
+
+from currency.model_choices import CurrencyType
 # Create your views here.
 
 
@@ -27,6 +29,7 @@ class RateCreateView(generic.CreateView):
     template_name = 'currency/rate_create.html'
     form_class = RateForm
     success_url = reverse_lazy('currency:rate_list')
+    initial = {'currency_type': CurrencyType.CURRENCY_TYPE_USD}
 
 
 class RateUpdateView(generic.UpdateView):
