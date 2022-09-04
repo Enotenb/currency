@@ -27,3 +27,11 @@ class ContactUs(models.Model):
 class Source(models.Model):
     name = models.CharField(max_length=64)
     source_url = models.CharField(max_length=255)
+
+
+class ResponseLog(models.Model):
+    response_time = models.FloatField()
+    request_method = models.CharField(max_length=10)
+    query_params = models.CharField(max_length=254)
+    ip = models.CharField(max_length=15)
+    path = models.CharField(max_length=300)
