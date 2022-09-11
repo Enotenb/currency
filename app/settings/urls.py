@@ -5,8 +5,9 @@ from currency import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('auth/', include('django.contrib.auth.urls')),
 
-    path('', views.IndexView.as_view()),
+    path('', views.IndexView.as_view(), name='index'),
     path('contact-us/', views.ContactListView.as_view(), name='contact_us'),
 
     path('currency/', include('currency.urls')),
