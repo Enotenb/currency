@@ -1,7 +1,27 @@
-from django.contrib.auth import get_user_model
+{% extends 'currency/base.html' %}
+
+{% block title %}
+    Password Change - {{ block.super }}
+{% endblock %}
+
+{% block main_content %}
+    <h3>Change Password</h3>
+    <form action="{% url 'password_change' %}" method="post">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Submit"></td>
+            </tr>
+        </table>
+    </form>
+{% endblock %}from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.views import generic
+from django.core.mail import send_mail
+from django.conf import settings
 
 from currency.models import ContactUs, Rate, Source
 
@@ -88,6 +108,7 @@ class SourceDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy('currency:source_list')
 
 
+
 class ContactUsListView(LoginRequiredMixin, generic.ListView):
     queryset = ContactUs.objects.all()
     template_name = 'currency/contact_us.html'
@@ -104,3 +125,33 @@ class UserProfileView(LoginRequiredMixin, generic.UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
+        
+class ContactUsCreateView(generic.CreateView):
+    model = ContactUs
+    success_url = reverse_lazy('currency:rate_list')
+    template_name = 'currency/contactus_create.html'
+    fields = (
+        'email_from',
+        'subject',
+        'message',
+    )
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+
+        subject = 'ContactUs From Currency Project'
+        message = f'''
+        Subject From Client: {self.object.subject}
+        Email: {self.object.email_from}
+        Wants to contact
+        '''
+
+        send_mail(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            [settings.EMAIL_HOST_USER],
+            fail_silently=False,
+        )
+
+        return response
