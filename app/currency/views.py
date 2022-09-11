@@ -1,5 +1,7 @@
 from django.urls import reverse_lazy
 from django.views import generic
+from django.core.mail import send_mail
+from django.conf import settings
 
 from currency.models import ContactUs, Rate, Source
 
@@ -80,6 +82,37 @@ class SourceDeleteView(generic.DeleteView):
     success_url = reverse_lazy('currency:source_list')
 
 
-class ContactListView(generic.ListView):
+class ContactUsListView(generic.ListView):
     queryset = ContactUs.objects.all()
     template_name = 'currency/contact_us.html'
+
+
+class ContactUsCreateView(generic.CreateView):
+    model = ContactUs
+    success_url = reverse_lazy('currency:rate_list')
+    template_name = 'currency/contactus_create.html'
+    fields = (
+        'email_from',
+        'subject',
+        'message',
+    )
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+
+        subject = 'ContactUs From Currency Project'
+        message = f'''
+        Subject From Client: {self.object.subject}
+        Email: {self.object.email_from}
+        Wants to contact
+        '''
+
+        send_mail(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            [settings.EMAIL_HOST_USER],
+            fail_silently=False,
+        )
+
+        return response
