@@ -1,3 +1,23 @@
+{% extends 'currency/base.html' %}
+
+{% block title %}
+    Password Change - {{ block.super }}
+{% endblock %}
+
+{% block main_content %}
+    <h3>Change Password</h3>
+    <form action="{% url 'password_change' %}" method="post">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Submit"></td>
+            </tr>
+        </table>
+    </form>
+{% endblock %}from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.views import generic
 from django.core.mail import send_mail
@@ -21,12 +41,12 @@ class IndexView(generic.TemplateView):
         return context
 
 
-class RateListView(generic.ListView):
+class RateListView(LoginRequiredMixin, generic.ListView):
     queryset = Rate.objects.all()
     template_name = 'currency/rate_list.html'
 
 
-class RateCreateView(generic.CreateView):
+class RateCreateView(LoginRequiredMixin, generic.CreateView):
     queryset = Rate.objects.all()
     template_name = 'currency/rate_create.html'
     form_class = RateForm
@@ -34,59 +54,78 @@ class RateCreateView(generic.CreateView):
     initial = {'currency_type': CurrencyType.CURRENCY_TYPE_USD}
 
 
-class RateUpdateView(generic.UpdateView):
+class RateUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
     queryset = Rate.objects.all()
     template_name = 'currency/rate_update.html'
     form_class = RateForm
     success_url = reverse_lazy('currency:rate_list')
 
+    def test_func(self):
+        return self.request.user.is_superuser
 
-class RateDetailsView(generic.DetailView):
+
+class RateDetailsView(LoginRequiredMixin, generic.DetailView):
     queryset = Rate.objects.all()
     template_name = 'currency/rate_details.html'
 
 
-class RateDeleteView(generic.DeleteView):
+class RateDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
     queryset = Rate.objects.all()
     template_name = 'currency/rate_delete.html'
     success_url = reverse_lazy('currency:rate_list')
 
+    def test_func(self):
+        return self.request.user.is_superuser
 
-class SourceListView(generic.ListView):
+
+class SourceListView(LoginRequiredMixin, generic.ListView):
     queryset = Source.objects.all()
     template_name = 'currency/source_list.html'
 
 
-class SourceCreateView(generic.CreateView):
+class SourceCreateView(LoginRequiredMixin, generic.CreateView):
     queryset = Rate.objects.all()
     template_name = 'currency/source_create.html'
     form_class = SourceForm
     success_url = reverse_lazy('currency:source_list')
 
 
-class SourceDetailsView(generic.DetailView):
+class SourceDetailsView(LoginRequiredMixin, generic.DetailView):
     queryset = Source.objects.all()
     template_name = 'currency/source_details.html'
 
 
-class SourceUpdateView(generic.UpdateView):
+class SourceUpdateView(LoginRequiredMixin, generic.UpdateView):
     queryset = Source.objects.all()
     template_name = 'currency/source_update.html'
     form_class = SourceForm
     success_url = reverse_lazy('currency:source_list')
 
 
-class SourceDeleteView(generic.DeleteView):
+class SourceDeleteView(LoginRequiredMixin, generic.DeleteView):
     queryset = Source.objects.all()
     template_name = 'currency/source_delete.html'
     success_url = reverse_lazy('currency:source_list')
 
 
-class ContactUsListView(generic.ListView):
+
+class ContactUsListView(LoginRequiredMixin, generic.ListView):
     queryset = ContactUs.objects.all()
     template_name = 'currency/contact_us.html'
 
 
+class UserProfileView(LoginRequiredMixin, generic.UpdateView):
+    queryset = get_user_model().objects.all()
+    template_name = 'currency/my_profile.html'
+    success_url = reverse_lazy('index')
+    fields = (
+        'first_name',
+        'last_name',
+    )
+
+    def get_object(self, queryset=None):
+        return self.request.user
+        
 class ContactUsCreateView(generic.CreateView):
     model = ContactUs
     success_url = reverse_lazy('currency:rate_list')
