@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -59,6 +60,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'silk.middleware.SilkyMiddleware',
+    'currency.middlewares.SimpleMiddleware',
 ]
 
 ROOT_URLCONF = 'settings.urls'
@@ -66,7 +68,9 @@ ROOT_URLCONF = 'settings.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / 'templates'
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -148,4 +152,8 @@ EMAIL_HOST_USER = 'testtestapp777@gmail.com'
 AUTH_USER_MODEL = 'accounts.User'
 
 HTTP_SCHEMA = 'http'  # https
-DOMAIN = 'localhost:8000'
+DOMAIN = 'localhost:8000'=
+LOGIN_REDIRECT_URL = reverse_lazy('index')
+LOGOUT_REDIRECT_URL = reverse_lazy('currency:rate_list')
+LOGIN_URL = reverse_lazy('login')
+

@@ -14,8 +14,10 @@
         <th>Buy</th>
         <th>Source</th>
         <th>Created</th>
+        {% if request.user.is_superuser %}
         <th>Edit</th>
         <th>Delete</th>
+        {% endif %}
     </tr>
     <tr>
         <td>{{ object.id }}</td>
