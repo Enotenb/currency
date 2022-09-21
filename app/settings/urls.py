@@ -13,6 +13,7 @@ urlpatterns = [
     path('contact-us/create/', views.ContactUsCreateView.as_view(), name='contactus_create'),
 
     path('currency/', include('currency.urls')),
+    path('accounts/', include('accounts.urls')),
     path('__debug__/', include('debug_toolbar.urls')),
     path('silk/', include('silk.urls', namespace='silk')),
 ]
