@@ -152,8 +152,7 @@ EMAIL_HOST_USER = 'testtestapp777@gmail.com'
 AUTH_USER_MODEL = 'accounts.User'
 
 HTTP_SCHEMA = 'http'  # https
-DOMAIN = 'localhost:8000'=
+DOMAIN = 'localhost:8000'
 LOGIN_REDIRECT_URL = reverse_lazy('index')
 LOGOUT_REDIRECT_URL = reverse_lazy('currency:rate_list')
 LOGIN_URL = reverse_lazy('login')
-
